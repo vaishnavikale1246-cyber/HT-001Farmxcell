@@ -151,6 +151,44 @@ class ContentManager {
             });
         }
 
+        // Weather page functionality
+        const searchWeatherBtn = document.getElementById('searchWeatherBtn');
+        const getCurrentLocationBtn = document.getElementById('getCurrentLocationBtn');
+        const weatherLocation = document.getElementById('weatherLocation');
+
+        if (searchWeatherBtn) {
+            searchWeatherBtn.addEventListener('click', () => {
+                const city = weatherLocation.value.trim();
+                if (city) {
+                    WeatherController.loadWeather(city);
+                } else {
+                    alert('Please enter a city name');
+                }
+            });
+        }
+
+        if (weatherLocation) {
+            weatherLocation.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    const city = weatherLocation.value.trim();
+                    if (city) {
+                        WeatherController.loadWeather(city);
+                    }
+                }
+            });
+        }
+
+        if (getCurrentLocationBtn) {
+            getCurrentLocationBtn.addEventListener('click', () => {
+                WeatherController.getCurrentLocation();
+            });
+        }
+
+        // Initialize weather if on weather page
+        if (router.currentRoute === 'weather' && typeof WeatherController !== 'undefined') {
+            WeatherController.init();
+        }
+
         // Crop filter functionality
         this.initCropFilters();
         this.initLoanFilters();

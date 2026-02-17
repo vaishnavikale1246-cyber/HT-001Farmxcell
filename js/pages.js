@@ -218,34 +218,44 @@ const Pages = {
             </p>
 
             <div class="search-bar">
-                <input type="text" placeholder="Enter location...">
-                <button class="btn-primary">Search</button>
+                <input type="text" id="weatherLocation" placeholder="Enter city name (e.g., Delhi, Mumbai)...">
+                <button class="btn-primary" id="searchWeatherBtn">Search</button>
+                <button class="btn-primary" id="getCurrentLocationBtn" style="margin-left: 10px;">📍 Use My Location</button>
             </div>
 
-            <div class="weather-grid">
+            <div id="weatherLoading" style="display: none; text-align: center; padding: 40px;">
+                <div class="spinner" style="border: 4px solid #f3f3f3; border-top: 4px solid #2e7d32; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 0 auto;"></div>
+                <p style="margin-top: 20px; color: #666;">Loading weather data...</p>
+            </div>
+
+            <div id="weatherError" style="display: none; text-align: center; padding: 40px;">
+                <p style="color: #ef4444; font-size: 1.1rem;">⚠️ Unable to fetch weather data. Please try again.</p>
+            </div>
+
+            <div id="weatherContent" class="weather-grid">
                 <div class="weather-main">
                     <div class="card">
-                        <h3>Current Weather - Delhi</h3>
+                        <h3>Current Weather - <span id="cityName">Delhi</span></h3>
                         <div class="current-weather">
                             <div>
-                                <div class="temperature">28°C</div>
-                                <div>Partly Cloudy</div>
+                                <div class="temperature" id="currentTemp">--°C</div>
+                                <div id="weatherDesc">Loading...</div>
+                                <div style="font-size: 0.9rem; color: #666; margin-top: 10px;">
+                                    Feels like: <span id="feelsLike">--°C</span>
+                                </div>
                             </div>
                             <div class="weather-stats">
-                                <div>Humidity<br><span>65%</span></div>
-                                <div>Wind<br><span>12 km/h</span></div>
+                                <div>Humidity<br><span id="humidity">--%</span></div>
+                                <div>Wind<br><span id="windSpeed">-- km/h</span></div>
+                                <div>Pressure<br><span id="pressure">-- hPa</span></div>
                             </div>
                         </div>
                     </div>
 
                     <div class="card">
                         <h3>5-Day Forecast</h3>
-                        <div class="forecast-grid">
-                            <div class="forecast-item">Mon<br>30° / 22°</div>
-                            <div class="forecast-item">Tue<br>29° / 21°</div>
-                            <div class="forecast-item">Wed<br>31° / 23°</div>
-                            <div class="forecast-item">Thu<br>28° / 20°</div>
-                            <div class="forecast-item">Fri<br>27° / 19°</div>
+                        <div class="forecast-grid" id="forecastContainer">
+                            <div class="forecast-item">Loading...</div>
                         </div>
                     </div>
                 </div>
@@ -253,17 +263,11 @@ const Pages = {
                 <div class="weather-sidebar">
                     <div class="card">
                         <h3>Agricultural Alerts</h3>
-                        <div class="alert low">
-                            <strong>Rainfall (Low)</strong><br>
-                            Light rainfall expected in the next 24 hours.
-                        </div>
-                        <div class="alert medium">
-                            <strong>Irrigation (Medium)</strong><br>
-                            Soil moisture decreasing, consider irrigation.
-                        </div>
-                        <div class="alert high">
-                            <strong>Pest (High)</strong><br>
-                            High pest activity detected in nearby regions.
+                        <div id="agricAlerts">
+                            <div class="alert low">
+                                <strong>Loading...</strong><br>
+                                Fetching agricultural alerts...
+                            </div>
                         </div>
                     </div>
 
