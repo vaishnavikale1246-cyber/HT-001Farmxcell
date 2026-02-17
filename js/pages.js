@@ -327,28 +327,62 @@ const Pages = {
                 <div class="crop-header">
                     <h1>${crop.icon} ${crop.name}</h1>
                     <span class="badge">${crop.category}</span>
-                    <p>${crop.fullDescription || crop.description}</p>
+                    <p style="font-size: 1.1rem; margin-top: 15px;">${crop.fullDescription || crop.description}</p>
                 </div>
 
+                <h2 style="margin-top: 40px;">📊 Basic Information</h2>
                 <div class="info-grid">
-                    <div class="info-card"><h3>Season</h3><p>${crop.season}</p></div>
-                    <div class="info-card"><h3>Water Requirement</h3><p>${crop.water}</p></div>
-                    <div class="info-card"><h3>Soil Type</h3><p>${crop.soil}</p></div>
-                    <div class="info-card"><h3>Growth Duration</h3><p>${crop.duration}</p></div>
-                    <div class="info-card"><h3>Expected Yield</h3><p>${crop.yield}</p></div>
+                    <div class="info-card"><h3>🌱 Season</h3><p>${crop.season}</p></div>
+                    <div class="info-card"><h3>💧 Water Need</h3><p>${crop.water}</p></div>
+                    <div class="info-card"><h3>🌍 Soil Type</h3><p>${crop.soil}</p></div>
+                    <div class="info-card"><h3>⏱️ Duration</h3><p>${crop.duration}</p></div>
+                    <div class="info-card"><h3>📈 Expected Yield</h3><p>${crop.yield}</p></div>
+                    ${crop.temperature ? `<div class="info-card"><h3>🌡️ Temperature</h3><p>${crop.temperature}</p></div>` : ''}
+                    ${crop.rainfall ? `<div class="info-card"><h3>🌧️ Rainfall</h3><p>${crop.rainfall}</p></div>` : ''}
+                    ${crop.pH ? `<div class="info-card"><h3>⚗️ Soil pH</h3><p>${crop.pH}</p></div>` : ''}
                 </div>
+
+                ${crop.fertilizers ? `
+                <div class="section">
+                    <h2>🌿 Fertilizer Application Schedule</h2>
+                    <div class="grid-2">
+                        <div class="card">
+                            <h3 style="color: var(--primary); margin-bottom: 15px;">Basal Application (At Sowing)</h3>
+                            <p style="line-height: 1.8;">${crop.fertilizers.basal}</p>
+                        </div>
+                        <div class="card">
+                            <h3 style="color: var(--primary); margin-bottom: 15px;">Top Dressing (During Growth)</h3>
+                            <p style="line-height: 1.8;">${crop.fertilizers.topDressing}</p>
+                        </div>
+                    </div>
+                </div>
+                ` : ''}
+
+                ${crop.irrigation ? `
+                <div class="section">
+                    <h2>💧 Irrigation Schedule</h2>
+                    <div class="list">
+                        <ul>
+                            ${crop.irrigation.map(stage => `<li><strong>${stage.split(' - ')[0]}</strong> - ${stage.split(' - ')[1] || ''}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+                ` : ''}
 
                 <div class="section">
-                    <h2>Common Diseases</h2>
+                    <h2>🦠 Common Diseases & Pests</h2>
                     <div class="list">
                         <ul>
                             ${crop.diseases.map(d => `<li>${d}</li>`).join('')}
                         </ul>
+                        <p style="margin-top: 15px; padding: 15px; background: #fff8e1; border-left: 4px solid #f59e0b; border-radius: 6px;">
+                            <strong>💡 Prevention Tip:</strong> Regular monitoring, crop rotation, and use of disease-resistant varieties can significantly reduce disease incidence.
+                        </p>
                     </div>
                 </div>
 
                 <div class="section">
-                    <h2>Best Practices</h2>
+                    <h2>✅ Best Farming Practices</h2>
                     <div class="list">
                         <ul>
                             ${crop.practices.map(p => `<li>${p}</li>`).join('')}
@@ -356,12 +390,51 @@ const Pages = {
                     </div>
                 </div>
 
+                ${crop.harvesting ? `
                 <div class="section">
-                    <h2>Related Resources</h2>
+                    <h2>🌾 Harvesting Guidelines</h2>
+                    <div class="card" style="background: linear-gradient(135deg, #e8f5e9, #f1f8f4);">
+                        <p style="font-size: 1.05rem; line-height: 1.8;">${crop.harvesting}</p>
+                    </div>
+                </div>
+                ` : ''}
+
+                ${crop.storage ? `
+                <div class="section">
+                    <h2>📦 Storage & Post-Harvest</h2>
+                    <div class="card" style="background: linear-gradient(135deg, #e3f2fd, #f1f8ff);">
+                        <p style="font-size: 1.05rem; line-height: 1.8;">${crop.storage}</p>
+                    </div>
+                </div>
+                ` : ''}
+
+                ${crop.marketPrice || crop.nutritionalValue ? `
+                <div class="section">
+                    <h2>💰 Market & Nutrition Information</h2>
+                    <div class="grid-2">
+                        ${crop.marketPrice ? `
+                        <div class="card">
+                            <h3 style="color: var(--primary); margin-bottom: 15px;">💵 Market Price</h3>
+                            <p style="font-size: 1.1rem; font-weight: 600; color: var(--success);">${crop.marketPrice}</p>
+                            <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">*Prices vary by region, season, and quality</p>
+                        </div>
+                        ` : ''}
+                        ${crop.nutritionalValue ? `
+                        <div class="card">
+                            <h3 style="color: var(--primary); margin-bottom: 15px;">🥗 Nutritional Value</h3>
+                            <p style="line-height: 1.8;">${crop.nutritionalValue}</p>
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+                ` : ''}
+
+                <div class="section">
+                    <h2>🔗 Related Resources</h2>
                     <div class="resources">
-                        <a href="#" data-route="fertilizer" class="btn-primary">Fertilizer Recommendations</a>
-                        <a href="#" data-route="weather" class="btn-primary">Weather Forecast</a>
-                        <a href="#" data-route="loans" class="btn-primary">Government Schemes</a>
+                        <a href="#" data-route="fertilizer" class="btn-primary">💧 Fertilizer Guide</a>
+                        <a href="#" data-route="weather" class="btn-primary">🌤️ Weather Forecast</a>
+                        <a href="#" data-route="loans" class="btn-primary">🏛️ Government Schemes</a>
                     </div>
                 </div>
 

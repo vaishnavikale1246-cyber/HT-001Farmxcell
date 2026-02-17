@@ -336,3 +336,143 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load initial page
     router.navigate('home');
 });
+
+
+// ==================== Smooth Scroll ====================
+document.addEventListener('click', (e) => {
+    const target = e.target.closest('a[href^="#"]');
+    if (target && target.getAttribute('href') !== '#') {
+        e.preventDefault();
+        const targetId = target.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+        
+        if (targetElement) {
+            targetElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    }
+});
+
+// ==================== Scroll Animations ====================
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const animateOnScroll = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+        }
+    });
+}, observerOptions);
+
+// Observe cards and sections
+document.addEventListener('DOMContentLoaded', () => {
+    const cards = document.querySelectorAll('.card, .stat-item');
+    cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        card.style.transition = `all 0.6s ease ${index * 0.1}s`;
+        animateOnScroll.observe(card);
+    });
+});
+
+// ==================== Navbar Scroll Effect ====================
+let lastScroll = 0;
+window.addEventListener('scroll', () => {
+    const navbar = document.querySelector('.navbar');
+    const currentScroll = window.pageYOffset;
+    
+    if (currentScroll > 100) {
+        navbar.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
+        navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+    } else {
+        navbar.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.05)';
+        navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+    }
+    
+    lastScroll = currentScroll;
+});
+
+// ==================== Counter Animation ====================
+function animateCounter(element, target, duration = 2000) {
+    const start = 0;
+    const increment = target / (duration / 16);
+    let current = start;
+
+    const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+            element.textContent = Math.round(target);
+            clearInterval(timer);
+        } else {
+            element.textContent = Math.round(current);
+        }
+    }, 16);
+}
+
+// Animate stat numbers when they come into view
+const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
+            const text = entry.target.textContent;
+            const number = parseInt(text.replace(/\D/g, ''));
+            if (number) {
+                animateCounter(entry.target, number);
+                entry.target.classList.add('counted');
+            }
+        }
+    });
+}, { threshold: 0.5 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const statNumbers = document.querySelectorAll('.stat-item h2');
+    statNumbers.forEach(stat => counterObserver.observe(stat));
+});
+
+// ==================== Button Ripple Effect ====================
+document.addEventListener('click', (e) => {
+    const button = e.target.closest('.btn, .btn-primary, .btn-hero');
+    if (button) {
+        const ripple = document.createElement('span');
+        const rect = button.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = e.clientX - rect.left - size / 2;
+        const y = e.clientY - rect.top - size / 2;
+        
+        ripple.style.cssText = `
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            width: ${size}px;
+            height: ${size}px;
+            left: ${x}px;
+            top: ${y}px;
+            transform: scale(0);
+            animation: ripple-animation 0.6s ease-out;
+            pointer-events: none;
+        `;
+        
+        button.style.position = 'relative';
+        button.style.overflow = 'hidden';
+        button.appendChild(ripple);
+        
+        setTimeout(() => ripple.remove(), 600);
+    }
+});
+
+// Add ripple animation CSS
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes ripple-animation {
+        to {
+            transform: scale(4);
+            opacity: 0;
+        }
+    }
+`;
+document.head.appendChild(style);
