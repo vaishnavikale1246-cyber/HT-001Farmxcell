@@ -241,14 +241,20 @@ p.description {
 <body>
      <nav class="navbar">
         <a href="index.html" class="logo">
-            <i data-lucide="leaf"></i> AGRIHELPER
+            🌿 AGRIHELPER
         </a>
         <div class="nav-links">
-            <a href="index.html" class="active">Home</a>
+            <a href="index.html">Home</a>
             <a href="crop.html">Crop Info</a>
             <a href="fertilizer.html">Fertilizer</a>
             <a href="loan.html">Gov Loans</a>
-            <a href="weather.html">Weather</a>
+            <a href="weather.html" class="active">Weather</a>
+            <a href="login.html" id="loginLink">Login</a>
+            <div id="userMenu" style="display: none;">
+                <span class="user-display" style="padding: 6px 12px; background: #f0f0f0; border-radius: 20px; font-size: 0.85rem;">
+                    👤 <span id="userDisplay"></span>
+                </span>
+            </div>
         </div>
     </nav>
 
@@ -351,6 +357,22 @@ p.description {
   </div>
 
 </div>
+
+<footer style="background: white; border-top: 1px solid #eee; margin-top: 60px; padding: 20px; text-align: center; color: #666; font-size: 14px;">
+  © 2026 AgriHelper. Cultivating Tomorrow, Today.
+</footer>
+
+<script>
+// User Authentication Display
+const isLoggedIn = localStorage.getItem("isLoggedIn");
+const username = localStorage.getItem("username");
+
+if (isLoggedIn === "true" && username) {
+    document.getElementById("loginLink").style.display = "none";
+    document.getElementById("userMenu").style.display = "block";
+    document.getElementById("userDisplay").textContent = username;
+}
+</script>
 
 </body>
 </html>

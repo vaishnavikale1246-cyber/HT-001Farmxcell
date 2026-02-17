@@ -197,14 +197,20 @@ select {
 <body>
      <nav class="navbar">
         <a href="index.html" class="logo">
-            <i data-lucide="leaf"></i> AGRIHELPER
+            🌿 AGRIHELPER
         </a>
         <div class="nav-links">
-            <a href="index.html" class="active">Home</a>
+            <a href="index.html">Home</a>
             <a href="crop.html">Crop Info</a>
             <a href="fertilizer.html">Fertilizer</a>
-            <a href="loan.html">Gov Loans</a>
+            <a href="loan.html" class="active">Gov Loans</a>
             <a href="weather.html">Weather</a>
+            <a href="login.html" id="loginLink">Login</a>
+            <div id="userMenu" style="display: none;">
+                <span class="user-display" style="padding: 6px 12px; background: #f0f0f0; border-radius: 20px; font-size: 0.85rem;">
+                    👤 <span id="userDisplay"></span>
+                </span>
+            </div>
         </div>
     </nav>
 
@@ -285,9 +291,61 @@ Explore various government schemes and financial assistance programs available f
     </div>
   </div>
 
+  <!-- Card 3 -->
+  <div class="card" data-type="Subsidy" data-region="National">
+    <div class="card-header">
+      <div class="badge">Subsidy</div>
+      <h3>PM-KISAN Scheme</h3>
+      <div class="short-name">PM-KISAN</div>
+    </div>
+    <div class="card-content">
+      <p>Direct income support of ₹6,000 per year to all farmer families.</p>
+
+      <div class="stats">
+        <div>Interest: <span>0%</span></div>
+        <div>Amount: <span>₹6,000/year</span></div>
+      </div>
+
+      <ul class="benefits">
+        <li>Direct bank transfer</li>
+        <li>Three installments</li>
+      </ul>
+
+      <a href="#" class="btn">Learn More →</a>
+    </div>
+  </div>
+
+  <!-- Card 4 -->
+  <div class="card" data-type="Crop Loan" data-region="State">
+    <div class="card-header">
+      <div class="badge">Crop Loan</div>
+      <h3>Agricultural Term Loan</h3>
+      <div class="short-name">ATL</div>
+    </div>
+    <div class="card-content">
+      <p>Long-term loans for farm equipment, irrigation, and land development.</p>
+
+      <div class="stats">
+        <div>Interest: <span>7%</span></div>
+        <div>Max: <span>₹10,00,000</span></div>
+      </div>
+
+      <ul class="benefits">
+        <li>Long repayment period</li>
+        <li>Equipment financing</li>
+      </ul>
+
+      <a href="#" class="btn">Learn More →</a>
+    </div>
+  </div>
+
 </div>
 
 </div>
+
+<footer style="background: white; border-top: 1px solid #eee; margin-top: 60px; padding: 20px; text-align: center; color: #666; font-size: 14px;">
+  © 2026 AgriHelper. Cultivating Tomorrow, Today.
+</footer>
 
 <!-- Simple Filter Script -->
 <script>
@@ -321,6 +379,16 @@ function filterCards() {
 searchInput.addEventListener("input", filterCards);
 typeFilter.addEventListener("change", filterCards);
 regionFilter.addEventListener("change", filterCards);
+
+// User Authentication Display
+const isLoggedIn = localStorage.getItem("isLoggedIn");
+const username = localStorage.getItem("username");
+
+if (isLoggedIn === "true" && username) {
+    document.getElementById("loginLink").style.display = "none";
+    document.getElementById("userMenu").style.display = "block";
+    document.getElementById("userDisplay").textContent = username;
+}
 </script>
 
 </body>

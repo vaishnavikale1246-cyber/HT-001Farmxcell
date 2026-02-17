@@ -47,20 +47,27 @@ document.getElementById("loginForm").addEventListener("submit", function(e) {
     let password = document.getElementById("password").value;
 
     if(email !== "" && password !== "") {
-
         // Save user name (temporary example name from email)
         let username = email.split("@")[0];
 
         localStorage.setItem("isLoggedIn", "true");
         localStorage.setItem("username", username);
 
+        // Show success message
+        alert("Login successful! Welcome, " + username);
+        
         window.location.replace("index.html");
     } else {
         alert("Please enter email and password");
     }
 });
-</script>
 
+// Check if already logged in
+const isLoggedIn = localStorage.getItem("isLoggedIn");
+if (isLoggedIn === "true") {
+    window.location.replace("index.html");
+}
+</script>
 
 </body>
 </html>
