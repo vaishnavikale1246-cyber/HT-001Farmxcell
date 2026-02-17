@@ -75,3 +75,21 @@ body {
   color: #2e7d32;
   text-decoration: none;
 }
+.floating-back {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  background: white;
+  padding: 8px;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s ease;
+  z-index: 1000;
+}
+
+.floating-back:hover {
+  transform: translateX(-4px);
+  background: #2e7d32;
+  color: white;
+}
