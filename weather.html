@@ -4,8 +4,46 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Weather Dashboard</title>
+<link rel="stylesheet" href="global.css">
+
 
 <style>
+    .navbar {
+    position: sticky;
+    top: 0;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 800;
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 1.25rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-left: 1.5rem;
+    transition: color 0.2s;
+}
+
+.nav-links a.active, .nav-links a:hover {
+    color: var(--primary);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -201,6 +239,18 @@ p.description {
 </head>
 
 <body>
+     <nav class="navbar">
+        <a href="index.html" class="logo">
+            <i data-lucide="leaf"></i> AGRIHELPER
+        </a>
+        <div class="nav-links">
+            <a href="index.html" class="active">Home</a>
+            <a href="crop.html">Crop Info</a>
+            <a href="fertilizer.html">Fertilizer</a>
+            <a href="loan.html">Gov Loans</a>
+            <a href="weather.html">Weather</a>
+        </div>
+    </nav>
 
 <div class="container">
 
