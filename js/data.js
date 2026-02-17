@@ -7,39 +7,30 @@ const CropData = [
         icon: '🌾',
         category: 'Cereal',
         description: 'Wheat is one of the world\'s most important staple crops grown in cool seasons.',
-        fullDescription: 'Wheat is one of the world\'s most important staple crops. It is primarily grown in cool seasons and is a major source of carbohydrates and protein for millions of people.',
+        scientificName: 'Triticum aestivum',
+        cropType: 'Cereal',
         season: 'Rabi (Winter)',
-        water: '450-650 mm',
-        soil: 'Well-drained loamy or clay loam soil',
         duration: '100-150 days',
-        yield: '2-5 tonnes/hectare',
-        temperature: '15-25°C (optimal)',
-        rainfall: '75-100 cm annually',
+        soil: 'Loamy soil',
         pH: '6.0-7.5',
-        diseases: ['Rust (Leaf, Stem, Stripe)', 'Powdery Mildew', 'Karnal Bunt', 'Loose Smut'],
-        practices: [
-            'Use certified disease-resistant seeds',
-            'Sow at proper depth (4-5 cm)',
-            'Apply balanced fertilizers (NPK)',
-            'Ensure timely irrigation at critical growth stages',
-            'Practice crop rotation'
+        temperature: '10-25°C',
+        rainfall: '50-100 cm',
+        nitrogen: '120 kg/hectare',
+        phosphorus: '60 kg/hectare',
+        potassium: '40 kg/hectare',
+        organicAlternatives: 'Farmyard manure (FYM) 10-15 tonnes/hectare, Vermicompost 5 tonnes/hectare, Green manure',
+        irrigationFrequency: 'Every 20-25 days, 4-6 irrigations required',
+        criticalStages: 'Crown Root Initiation (CRI), Tillering, Flowering, Grain filling',
+        yieldPerAcre: '18-25 quintals per acre',
+        marketPrice: '₹2,000-2,500 per quintal',
+        estimatedProfit: '₹25,000-40,000 per acre',
+        diseases: [
+            { name: 'Rust (Leaf, Stem, Stripe)', symptoms: 'Orange-brown pustules on leaves and stems', treatment: 'Spray Propiconazole or Tebuconazole fungicides' },
+            { name: 'Powdery Mildew', symptoms: 'White powdery coating on leaves', treatment: 'Apply Sulfur-based fungicides' },
+            { name: 'Karnal Bunt', symptoms: 'Black powdery mass in grains', treatment: 'Seed treatment with Tebuconazole' }
         ],
-        fertilizers: {
-            basal: 'Apply 60 kg N, 30 kg P2O5, 20 kg K2O per hectare at sowing',
-            topDressing: 'Apply remaining 60 kg N in two splits - at crown root initiation and flowering'
-        },
-        irrigation: [
-            'Crown Root Initiation (CRI) stage - 20-25 days after sowing',
-            'Tillering stage - 40-45 days after sowing',
-            'Jointing stage - 60-65 days after sowing',
-            'Flowering stage - 80-85 days after sowing',
-            'Milk stage - 100-105 days after sowing',
-            'Dough stage - 115-120 days after sowing'
-        ],
-        harvesting: 'Harvest when grains are hard and moisture content is 20-25%. Use combine harvester or manual sickle.',
-        storage: 'Dry grains to 12% moisture. Store in clean, dry, pest-free warehouses. Use proper fumigation.',
-        marketPrice: '₹2,000-2,500 per quintal (varies by region and quality)',
-        nutritionalValue: 'Rich in carbohydrates (71%), protein (12%), fiber, vitamins B and E, minerals like iron and zinc'
+        schemes: ['Kisan Credit Card (KCC)', 'PM Fasal Bima Yojana (PMFBY)', 'Minimum Support Price (MSP) scheme'],
+        insurance: 'Covered under PMFBY - Premium 1.5% of sum insured'
     },
     {
         id: 'maize',
@@ -47,38 +38,30 @@ const CropData = [
         icon: '🌽',
         category: 'Cereal',
         description: 'Maize is a versatile crop used for food, feed, and industrial products.',
-        fullDescription: 'Maize, also known as corn, is a versatile crop used for food, animal feed, and industrial purposes. It is rich in carbohydrates and provides essential vitamins.',
+        scientificName: 'Zea mays',
+        cropType: 'Cereal',
         season: 'Kharif & Rabi',
-        water: '500-800 mm',
-        soil: 'Well-drained sandy loam',
         duration: '80-110 days',
-        yield: '5-8 tonnes/hectare',
-        temperature: '21-27°C (optimal)',
-        rainfall: '50-75 cm',
+        soil: 'Well-drained loamy soil',
         pH: '5.5-7.0',
-        diseases: ['Maize Dwarf Mosaic', 'Northern Leaf Blight', 'Stalk Rot', 'Ear Rot'],
-        practices: [
-            'Plant at 5-7 cm depth with 60-75 cm row spacing',
-            'Apply adequate nitrogen for high yields',
-            'Irrigate at critical stages: knee-high, tasseling, grain filling',
-            'Control weeds in first 40 days',
-            'Harvest when moisture content is 20-25%'
-        ],
-        fertilizers: {
-            basal: 'Apply 60 kg N, 60 kg P2O5, 40 kg K2O per hectare at sowing',
-            topDressing: 'Apply 60 kg N at knee-high stage (30-35 days) and 60 kg N at tasseling stage'
-        },
-        irrigation: [
-            'Knee-high stage - 20-25 days after sowing (critical)',
-            'Tasseling stage - 50-55 days after sowing (most critical)',
-            'Silking stage - 60-65 days after sowing (critical)',
-            'Grain filling stage - 75-80 days after sowing',
-            'Dough stage - 90-95 days after sowing'
-        ],
-        harvesting: 'Harvest when kernels are hard and moisture is 20-25%. Cobs should be dry with brown husks.',
-        storage: 'Dry to 12-14% moisture. Store in well-ventilated areas. Protect from rodents and insects.',
+        temperature: '18-27°C',
+        rainfall: '60-120 cm',
+        nitrogen: '150 kg/hectare',
+        phosphorus: '75 kg/hectare',
+        potassium: '40 kg/hectare',
+        organicAlternatives: 'Compost 8-10 tonnes/hectare, Poultry manure 3-4 tonnes/hectare, Bio-fertilizers',
+        irrigationFrequency: 'Every 10-15 days, 6-8 irrigations required',
+        criticalStages: 'Knee-high stage, Tasseling, Silking, Grain filling',
+        yieldPerAcre: '20-30 quintals per acre',
         marketPrice: '₹1,800-2,200 per quintal',
-        nutritionalValue: 'High in carbohydrates (74%), moderate protein (9%), rich in vitamins A, B, E, and minerals'
+        estimatedProfit: '₹30,000-50,000 per acre',
+        diseases: [
+            { name: 'Leaf Blight', symptoms: 'Long grayish lesions on leaves', treatment: 'Spray Mancozeb or Carbendazim' },
+            { name: 'Maize Dwarf Mosaic', symptoms: 'Stunted growth, yellow streaks', treatment: 'Control aphids, use resistant varieties' },
+            { name: 'Stalk Rot', symptoms: 'Rotting of lower stem', treatment: 'Improve drainage, balanced fertilization' }
+        ],
+        schemes: ['Kisan Credit Card (KCC)', 'PM Fasal Bima Yojana (PMFBY)', 'National Food Security Mission'],
+        insurance: 'Covered under PMFBY - Premium 2% of sum insured'
     },
     {
         id: 'tomato',
@@ -86,38 +69,30 @@ const CropData = [
         icon: '🍅',
         category: 'Vegetable',
         description: 'Tomatoes are widely cultivated and used in various cuisines worldwide.',
-        fullDescription: 'Tomatoes are one of the most popular vegetables grown worldwide. They are rich in vitamins A and C, and lycopene, making them highly nutritious.',
+        scientificName: 'Solanum lycopersicum',
+        cropType: 'Vegetable',
         season: 'Year-round (with protection)',
-        water: '400-600 mm',
-        soil: 'Sandy loam to clay loam',
         duration: '60-90 days',
-        yield: '25-40 tonnes/hectare',
-        temperature: '20-25°C (optimal)',
-        rainfall: '60-150 cm',
+        soil: 'Sandy loam',
         pH: '6.0-7.0',
-        diseases: ['Early Blight', 'Late Blight', 'Bacterial Wilt', 'Tomato Yellow Leaf Curl'],
-        practices: [
-            'Transplant seedlings 25-30 days old',
-            'Maintain spacing of 60x45 cm',
-            'Stake plants for support',
-            'Apply mulch to conserve moisture',
-            'Prune suckers for better yield'
+        temperature: '20-30°C',
+        rainfall: 'Moderate (60-150 cm)',
+        nitrogen: '100 kg/hectare',
+        phosphorus: '50 kg/hectare',
+        potassium: '50 kg/hectare',
+        organicAlternatives: 'FYM 25 tonnes/hectare, Neem cake 500 kg/hectare, Vermicompost 3-5 tonnes/hectare',
+        irrigationFrequency: 'Every 3-5 days in summer, 7-10 days in winter',
+        criticalStages: 'Transplanting, Flowering, Fruit development',
+        yieldPerAcre: '200-300 quintals per acre',
+        marketPrice: '₹10-40 per kg (highly seasonal)',
+        estimatedProfit: '₹80,000-1,50,000 per acre',
+        diseases: [
+            { name: 'Early Blight', symptoms: 'Dark brown spots with concentric rings', treatment: 'Spray Mancozeb or Chlorothalonil' },
+            { name: 'Late Blight', symptoms: 'Water-soaked lesions on leaves and fruits', treatment: 'Apply Metalaxyl + Mancozeb' },
+            { name: 'Bacterial Wilt', symptoms: 'Sudden wilting of entire plant', treatment: 'Remove infected plants, crop rotation' }
         ],
-        fertilizers: {
-            basal: 'Apply 25 tonnes FYM, 50 kg N, 50 kg P2O5, 50 kg K2O per hectare before transplanting',
-            topDressing: 'Apply 50 kg N and 50 kg K2O in 2-3 splits at 30, 45, and 60 days after transplanting'
-        },
-        irrigation: [
-            'Immediately after transplanting',
-            'Light irrigation every 3-4 days for first 2 weeks',
-            'Every 5-7 days during vegetative growth',
-            'Every 7-10 days during flowering and fruiting',
-            'Reduce irrigation 10 days before final harvest'
-        ],
-        harvesting: 'Harvest when fruits are firm and fully colored. Pick every 3-4 days. Handle carefully to avoid bruising.',
-        storage: 'Store at 10-15°C with 85-90% humidity. Ripe tomatoes last 7-10 days. Green tomatoes can be ripened gradually.',
-        marketPrice: '₹800-2,000 per quintal (highly variable by season)',
-        nutritionalValue: 'Rich in lycopene, vitamins A and C, potassium, folate. Low in calories (18 kcal per 100g)'
+        schemes: ['PM Kisan Samman Nidhi', 'Horticulture Mission', 'Vegetable Cluster Development'],
+        insurance: 'Covered under PMFBY and specialized horticulture insurance'
     },
     {
         id: 'soybean',
@@ -125,38 +100,30 @@ const CropData = [
         icon: '🌱',
         category: 'Pulse',
         description: 'Soybean is a high-protein crop used for oil and animal feed.',
-        fullDescription: 'Soybean is a high-protein legume that enriches soil nitrogen. It is used for oil extraction, animal feed, and various food products like tofu and soy milk.',
+        scientificName: 'Glycine max',
+        cropType: 'Pulse/Oilseed',
         season: 'Kharif',
-        water: '450-700 mm',
-        soil: 'Well-drained loamy soil',
         duration: '85-120 days',
-        yield: '2-3 tonnes/hectare',
-        temperature: '20-30°C (optimal)',
-        rainfall: '50-75 cm',
+        soil: 'Well-drained black soil',
         pH: '6.0-7.5',
-        diseases: ['Rust', 'Yellow Mosaic', 'Charcoal Rot', 'Pod Blight'],
-        practices: [
-            'Treat seeds with Rhizobium culture',
-            'Sow at 3-4 cm depth',
-            'Maintain row spacing of 30-45 cm',
-            'Avoid waterlogging',
-            'Harvest when 95% pods turn brown'
-        ],
-        fertilizers: {
-            basal: 'Apply 20 kg N, 60 kg P2O5, 40 kg K2O per hectare at sowing. Inoculate seeds with Rhizobium culture',
-            topDressing: 'Generally not required due to nitrogen fixation. Apply 20 kg N if plants show deficiency'
-        },
-        irrigation: [
-            'Pre-sowing irrigation for good germination',
-            'Flowering stage - 35-40 days after sowing (critical)',
-            'Pod formation stage - 55-60 days after sowing (critical)',
-            'Pod filling stage - 70-75 days after sowing',
-            'Stop irrigation 10-15 days before harvest'
-        ],
-        harvesting: 'Harvest when 95% pods turn brown and leaves fall. Moisture should be 12-14%. Use combine harvester or manual methods.',
-        storage: 'Dry to 9-10% moisture. Store in cool, dry place. Use hermetic storage to prevent pest damage.',
+        temperature: '20-30°C',
+        rainfall: '60-100 cm',
+        nitrogen: '30 kg/hectare',
+        phosphorus: '80 kg/hectare',
+        potassium: '40 kg/hectare',
+        organicAlternatives: 'Rhizobium culture (seed treatment), FYM 5-6 tonnes/hectare, Rock phosphate',
+        irrigationFrequency: 'Every 15-20 days, 3-4 irrigations required',
+        criticalStages: 'Flowering, Pod formation, Pod filling',
+        yieldPerAcre: '8-12 quintals per acre',
         marketPrice: '₹3,500-4,500 per quintal',
-        nutritionalValue: 'Highest protein content (40%), oil (20%), rich in calcium, iron, vitamins B and E'
+        estimatedProfit: '₹20,000-35,000 per acre',
+        diseases: [
+            { name: 'Yellow Mosaic Virus', symptoms: 'Yellow mottling on leaves', treatment: 'Control whiteflies, use resistant varieties' },
+            { name: 'Rust', symptoms: 'Reddish-brown pustules on leaves', treatment: 'Spray Hexaconazole or Tebuconazole' },
+            { name: 'Charcoal Rot', symptoms: 'Black discoloration of stem base', treatment: 'Seed treatment, avoid water stress' }
+        ],
+        schemes: ['National Food Security Mission (Pulses)', 'Oilseeds Production Programme', 'KCC'],
+        insurance: 'Covered under PMFBY - Premium 2% of sum insured'
     },
     {
         id: 'sugarcane',
@@ -164,38 +131,30 @@ const CropData = [
         icon: '🎋',
         category: 'Cash Crop',
         description: 'Sugarcane is a tropical crop used for sugar and ethanol production.',
-        fullDescription: 'Sugarcane is a tropical perennial crop widely cultivated for sugar production. It is also used to produce jaggery, ethanol, and animal feed. India is one of the largest producers of sugarcane in the world.',
+        scientificName: 'Saccharum officinarum',
+        cropType: 'Cash Crop',
         season: 'Year-round',
-        water: '1500-2500 mm',
-        soil: 'Deep, fertile, well-drained loamy soil',
         duration: '10-18 months',
-        yield: '60-80 tonnes/hectare',
-        temperature: '20-35°C (optimal)',
-        rainfall: '150-250 cm',
+        soil: 'Deep fertile loamy soil',
         pH: '6.5-7.5',
-        diseases: ['Red Rot', 'Smut', 'Wilt', 'Mosaic'],
-        practices: [
-            'Use disease-free seed cane',
-            'Plant at proper spacing (90-120 cm)',
-            'Ensure adequate irrigation',
-            'Apply balanced fertilization',
-            'Harvest at proper maturity'
+        temperature: '20-35°C',
+        rainfall: '100-150 cm',
+        nitrogen: '250 kg/hectare',
+        phosphorus: '115 kg/hectare',
+        potassium: '115 kg/hectare',
+        organicAlternatives: 'Press mud 10 tonnes/hectare, FYM 15-20 tonnes/hectare, Green manure',
+        irrigationFrequency: 'Every 7-15 days depending on stage, 30-35 irrigations',
+        criticalStages: 'Germination, Tillering, Grand growth phase',
+        yieldPerAcre: '30-40 tons per acre',
+        marketPrice: '₹300-350 per quintal (FRP)',
+        estimatedProfit: '₹50,000-80,000 per acre',
+        diseases: [
+            { name: 'Red Rot', symptoms: 'Reddening of internal tissues', treatment: 'Use resistant varieties, hot water treatment of setts' },
+            { name: 'Smut', symptoms: 'Whip-like structure from shoot', treatment: 'Remove infected shoots, use disease-free setts' },
+            { name: 'Wilt', symptoms: 'Yellowing and drying of leaves', treatment: 'Improve drainage, use healthy planting material' }
         ],
-        fertilizers: {
-            basal: 'Apply 150 kg N, 60 kg P2O5, 60 kg K2O per hectare at planting',
-            topDressing: 'Apply 150 kg N in 2-3 splits at 30, 60, and 90 days. Apply 60 kg K2O at 120 days'
-        },
-        irrigation: [
-            'Immediately after planting',
-            'Every 7-10 days during germination (first 45 days)',
-            'Every 10-15 days during tillering phase',
-            'Every 12-15 days during grand growth phase',
-            'Stop irrigation 15-20 days before harvest for better sugar content'
-        ],
-        harvesting: 'Harvest at 10-12 months for early varieties, 12-18 months for main crop. Cut close to ground level. Process within 24 hours.',
-        storage: 'Sugarcane should be processed immediately after harvest. Delay reduces sugar content. Store cut cane in shade if processing is delayed.',
-        marketPrice: '₹280-350 per quintal (government FRP)',
-        nutritionalValue: 'High in sucrose (15-20%), contains vitamins B and C, calcium, iron, magnesium, phosphorus'
+        schemes: ['Sugarcane Development Schemes', 'Fair and Remunerative Price (FRP)', 'KCC for Sugarcane'],
+        insurance: 'Covered under PMFBY and state-specific sugarcane insurance schemes'
     }
 ];
 

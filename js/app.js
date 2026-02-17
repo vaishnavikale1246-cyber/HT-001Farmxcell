@@ -193,6 +193,7 @@ class ContentManager {
         this.initCropFilters();
         this.initLoanFilters();
         this.initAccordions();
+        this.initCropDetailAccordions();
     }
 
     initCropFilters() {
@@ -296,6 +297,28 @@ class ContentManager {
             });
         });
     }
+
+    initCropDetailAccordions() {
+        const headers = document.querySelectorAll('.accordion-header-detail');
+        
+        headers.forEach(header => {
+            header.addEventListener('click', () => {
+                const item = header.parentElement;
+                const content = header.nextElementSibling;
+                const isActive = item.classList.contains('active');
+
+                // Close all accordions
+                document.querySelectorAll('.accordion-item-detail').forEach(i => {
+                    i.classList.remove('active');
+                });
+
+                // Open clicked accordion if it was closed
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+    }
 }
 
 // Initialize content manager
@@ -319,13 +342,18 @@ document.addEventListener('DOMContentLoaded', () => {
     router.register('crop-sugarcane', () => contentManager.render(Pages.cropDetail('sugarcane')));
     router.register('crop-tomato', () => contentManager.render(Pages.cropDetail('tomato')));
 
-    // Navigation click handlers
-    document.querySelectorAll('[data-route]').forEach(link => {
-        link.addEventListener('click', (e) => {
+    // Navigation click handlers - Use event delegation for dynamic content
+    document.addEventListener('click', (e) => {
+        console.log('Click detected on:', e.target); // Debug
+        const link = e.target.closest('[data-route]');
+        console.log('Found link with data-route:', link); // Debug
+        if (link) {
             e.preventDefault();
-            const route = e.currentTarget.getAttribute('data-route');
+            e.stopPropagation();
+            const route = link.getAttribute('data-route');
+            console.log('Navigating to:', route); // Debug log
             router.navigate(route);
-        });
+        }
     });
 
     // Logout button
@@ -341,7 +369,8 @@ document.addEventListener('DOMContentLoaded', () => {
 // ==================== Smooth Scroll ====================
 document.addEventListener('click', (e) => {
     const target = e.target.closest('a[href^="#"]');
-    if (target && target.getAttribute('href') !== '#') {
+    // Only handle anchor links that don't have data-route attribute
+    if (target && target.getAttribute('href') !== '#' && !target.hasAttribute('data-route')) {
         e.preventDefault();
         const targetId = target.getAttribute('href');
         const targetElement = document.querySelector(targetId);

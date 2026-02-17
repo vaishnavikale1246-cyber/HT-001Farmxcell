@@ -73,7 +73,7 @@ const Pages = {
                             <span class="badge">${crop.category}</span>
                             <p>${crop.description}</p>
                             <div class="season">Season: ${crop.season}</div>
-                            <a href="#" data-route="crop-${crop.id}" class="btn">View Details →</a>
+                            <a href="#" data-route="crop-${crop.id}" class="btn btn-view-details">View Details →</a>
                         </div>
                     </div>
                 `).join('')}
@@ -323,122 +323,222 @@ const Pages = {
         if (!crop) return '<div class="container"><h1>Crop not found</h1></div>';
 
         return `
-            <div class="container">
-                <div class="crop-header">
-                    <h1>${crop.icon} ${crop.name}</h1>
-                    <span class="badge">${crop.category}</span>
-                    <p style="font-size: 1.1rem; margin-top: 15px;">${crop.fullDescription || crop.description}</p>
-                </div>
-
-                <h2 style="margin-top: 40px;">📊 Basic Information</h2>
-                <div class="info-grid">
-                    <div class="info-card"><h3>🌱 Season</h3><p>${crop.season}</p></div>
-                    <div class="info-card"><h3>💧 Water Need</h3><p>${crop.water}</p></div>
-                    <div class="info-card"><h3>🌍 Soil Type</h3><p>${crop.soil}</p></div>
-                    <div class="info-card"><h3>⏱️ Duration</h3><p>${crop.duration}</p></div>
-                    <div class="info-card"><h3>📈 Expected Yield</h3><p>${crop.yield}</p></div>
-                    ${crop.temperature ? `<div class="info-card"><h3>🌡️ Temperature</h3><p>${crop.temperature}</p></div>` : ''}
-                    ${crop.rainfall ? `<div class="info-card"><h3>🌧️ Rainfall</h3><p>${crop.rainfall}</p></div>` : ''}
-                    ${crop.pH ? `<div class="info-card"><h3>⚗️ Soil pH</h3><p>${crop.pH}</p></div>` : ''}
-                </div>
-
-                ${crop.fertilizers ? `
-                <div class="section">
-                    <h2>🌿 Fertilizer Application Schedule</h2>
-                    <div class="grid-2">
-                        <div class="card">
-                            <h3 style="color: var(--primary); margin-bottom: 15px;">Basal Application (At Sowing)</h3>
-                            <p style="line-height: 1.8;">${crop.fertilizers.basal}</p>
-                        </div>
-                        <div class="card">
-                            <h3 style="color: var(--primary); margin-bottom: 15px;">Top Dressing (During Growth)</h3>
-                            <p style="line-height: 1.8;">${crop.fertilizers.topDressing}</p>
+            <div class="container crop-detail-page">
+                <!-- Header Section -->
+                <div class="crop-detail-header">
+                    <div class="crop-header-content">
+                        <div class="crop-icon-large">${crop.icon}</div>
+                        <div>
+                            <h1>${crop.name}</h1>
+                            <p class="scientific-name"><em>${crop.scientificName}</em></p>
+                            <span class="badge-large">${crop.cropType}</span>
                         </div>
                     </div>
+                    <p class="crop-description">${crop.description}</p>
                 </div>
-                ` : ''}
 
-                ${crop.irrigation ? `
-                <div class="section">
-                    <h2>💧 Irrigation Schedule</h2>
-                    <div class="list">
-                        <ul>
-                            ${crop.irrigation.map(stage => `<li><strong>${stage.split(' - ')[0]}</strong> - ${stage.split(' - ')[1] || ''}</li>`).join('')}
-                        </ul>
+                <!-- Quick Stats -->
+                <div class="quick-stats-grid">
+                    <div class="stat-box">
+                        <div class="stat-icon">🌱</div>
+                        <div class="stat-label">Season</div>
+                        <div class="stat-value">${crop.season}</div>
                     </div>
-                </div>
-                ` : ''}
-
-                <div class="section">
-                    <h2>🦠 Common Diseases & Pests</h2>
-                    <div class="list">
-                        <ul>
-                            ${crop.diseases.map(d => `<li>${d}</li>`).join('')}
-                        </ul>
-                        <p style="margin-top: 15px; padding: 15px; background: #fff8e1; border-left: 4px solid #f59e0b; border-radius: 6px;">
-                            <strong>💡 Prevention Tip:</strong> Regular monitoring, crop rotation, and use of disease-resistant varieties can significantly reduce disease incidence.
-                        </p>
+                    <div class="stat-box">
+                        <div class="stat-icon">⏱️</div>
+                        <div class="stat-label">Duration</div>
+                        <div class="stat-value">${crop.duration}</div>
                     </div>
-                </div>
-
-                <div class="section">
-                    <h2>✅ Best Farming Practices</h2>
-                    <div class="list">
-                        <ul>
-                            ${crop.practices.map(p => `<li>${p}</li>`).join('')}
-                        </ul>
+                    <div class="stat-box">
+                        <div class="stat-icon">📈</div>
+                        <div class="stat-label">Yield</div>
+                        <div class="stat-value">${crop.yieldPerAcre}</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-label">Market Price</div>
+                        <div class="stat-value">${crop.marketPrice}</div>
                     </div>
                 </div>
 
-                ${crop.harvesting ? `
-                <div class="section">
-                    <h2>🌾 Harvesting Guidelines</h2>
-                    <div class="card" style="background: linear-gradient(135deg, #e8f5e9, #f1f8f4);">
-                        <p style="font-size: 1.05rem; line-height: 1.8;">${crop.harvesting}</p>
-                    </div>
-                </div>
-                ` : ''}
-
-                ${crop.storage ? `
-                <div class="section">
-                    <h2>📦 Storage & Post-Harvest</h2>
-                    <div class="card" style="background: linear-gradient(135deg, #e3f2fd, #f1f8ff);">
-                        <p style="font-size: 1.05rem; line-height: 1.8;">${crop.storage}</p>
-                    </div>
-                </div>
-                ` : ''}
-
-                ${crop.marketPrice || crop.nutritionalValue ? `
-                <div class="section">
-                    <h2>💰 Market & Nutrition Information</h2>
-                    <div class="grid-2">
-                        ${crop.marketPrice ? `
-                        <div class="card">
-                            <h3 style="color: var(--primary); margin-bottom: 15px;">💵 Market Price</h3>
-                            <p style="font-size: 1.1rem; font-weight: 600; color: var(--success);">${crop.marketPrice}</p>
-                            <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">*Prices vary by region, season, and quality</p>
+                <!-- Accordion Sections -->
+                <div class="accordion-container">
+                    
+                    <!-- Growing Conditions -->
+                    <div class="accordion-item-detail">
+                        <div class="accordion-header-detail">
+                            <div class="accordion-title">
+                                <span class="accordion-icon-detail">🌍</span>
+                                <span>Ideal Growing Conditions</span>
+                            </div>
+                            <span class="accordion-toggle">+</span>
                         </div>
-                        ` : ''}
-                        ${crop.nutritionalValue ? `
-                        <div class="card">
-                            <h3 style="color: var(--primary); margin-bottom: 15px;">🥗 Nutritional Value</h3>
-                            <p style="line-height: 1.8;">${crop.nutritionalValue}</p>
+                        <div class="accordion-content-detail">
+                            <div class="info-grid-detail">
+                                <div class="info-item">
+                                    <strong>🌱 Soil Type:</strong>
+                                    <p>${crop.soil}</p>
+                                </div>
+                                <div class="info-item">
+                                    <strong>⚗️ Soil pH:</strong>
+                                    <p>${crop.pH}</p>
+                                </div>
+                                <div class="info-item">
+                                    <strong>🌡️ Temperature:</strong>
+                                    <p>${crop.temperature}</p>
+                                </div>
+                                <div class="info-item">
+                                    <strong>🌧️ Rainfall:</strong>
+                                    <p>${crop.rainfall}</p>
+                                </div>
+                            </div>
                         </div>
-                        ` : ''}
                     </div>
-                </div>
-                ` : ''}
 
-                <div class="section">
-                    <h2>🔗 Related Resources</h2>
-                    <div class="resources">
-                        <a href="#" data-route="fertilizer" class="btn-primary">💧 Fertilizer Guide</a>
-                        <a href="#" data-route="weather" class="btn-primary">🌤️ Weather Forecast</a>
-                        <a href="#" data-route="loans" class="btn-primary">🏛️ Government Schemes</a>
+                    <!-- Fertilizer Recommendation -->
+                    <div class="accordion-item-detail">
+                        <div class="accordion-header-detail">
+                            <div class="accordion-title">
+                                <span class="accordion-icon-detail">🌿</span>
+                                <span>Fertilizer Recommendation (NPK)</span>
+                            </div>
+                            <span class="accordion-toggle">+</span>
+                        </div>
+                        <div class="accordion-content-detail">
+                            <div class="fertilizer-grid">
+                                <div class="fertilizer-box nitrogen">
+                                    <div class="fertilizer-label">Nitrogen (N)</div>
+                                    <div class="fertilizer-value">${crop.nitrogen}</div>
+                                </div>
+                                <div class="fertilizer-box phosphorus">
+                                    <div class="fertilizer-label">Phosphorus (P)</div>
+                                    <div class="fertilizer-value">${crop.phosphorus}</div>
+                                </div>
+                                <div class="fertilizer-box potassium">
+                                    <div class="fertilizer-label">Potassium (K)</div>
+                                    <div class="fertilizer-value">${crop.potassium}</div>
+                                </div>
+                            </div>
+                            <div class="organic-alternatives">
+                                <strong>🌾 Organic Alternatives:</strong>
+                                <p>${crop.organicAlternatives}</p>
+                            </div>
+                        </div>
                     </div>
+
+                    <!-- Water Requirement -->
+                    <div class="accordion-item-detail">
+                        <div class="accordion-header-detail">
+                            <div class="accordion-title">
+                                <span class="accordion-icon-detail">💧</span>
+                                <span>Water Requirement & Irrigation</span>
+                            </div>
+                            <span class="accordion-toggle">+</span>
+                        </div>
+                        <div class="accordion-content-detail">
+                            <div class="info-item">
+                                <strong>💦 Irrigation Frequency:</strong>
+                                <p>${crop.irrigationFrequency}</p>
+                            </div>
+                            <div class="info-item">
+                                <strong>⚠️ Critical Growth Stages:</strong>
+                                <p>${crop.criticalStages}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Expected Yield & Profit -->
+                    <div class="accordion-item-detail">
+                        <div class="accordion-header-detail">
+                            <div class="accordion-title">
+                                <span class="accordion-icon-detail">📊</span>
+                                <span>Expected Yield & Economics</span>
+                            </div>
+                            <span class="accordion-toggle">+</span>
+                        </div>
+                        <div class="accordion-content-detail">
+                            <div class="economics-grid">
+                                <div class="economics-box">
+                                    <div class="economics-icon">📈</div>
+                                    <div class="economics-label">Average Yield</div>
+                                    <div class="economics-value">${crop.yieldPerAcre}</div>
+                                </div>
+                                <div class="economics-box">
+                                    <div class="economics-icon">💵</div>
+                                    <div class="economics-label">Market Price</div>
+                                    <div class="economics-value">${crop.marketPrice}</div>
+                                </div>
+                                <div class="economics-box highlight">
+                                    <div class="economics-icon">💰</div>
+                                    <div class="economics-label">Estimated Profit</div>
+                                    <div class="economics-value">${crop.estimatedProfit}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Diseases & Solutions -->
+                    <div class="accordion-item-detail">
+                        <div class="accordion-header-detail">
+                            <div class="accordion-title">
+                                <span class="accordion-icon-detail">🦠</span>
+                                <span>Common Diseases & Solutions</span>
+                            </div>
+                            <span class="accordion-toggle">+</span>
+                        </div>
+                        <div class="accordion-content-detail">
+                            ${crop.diseases.map(disease => `
+                                <div class="disease-card">
+                                    <h4>🔴 ${disease.name}</h4>
+                                    <p><strong>Symptoms:</strong> ${disease.symptoms}</p>
+                                    <p><strong>Treatment:</strong> ${disease.treatment}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Government Schemes -->
+                    <div class="accordion-item-detail">
+                        <div class="accordion-header-detail">
+                            <div class="accordion-title">
+                                <span class="accordion-icon-detail">🏛️</span>
+                                <span>Government Schemes & Insurance</span>
+                            </div>
+                            <span class="accordion-toggle">+</span>
+                        </div>
+                        <div class="accordion-content-detail">
+                            <div class="schemes-section">
+                                <strong>✅ Eligible Schemes:</strong>
+                                <ul class="schemes-list">
+                                    ${crop.schemes.map(scheme => `<li>${scheme}</li>`).join('')}
+                                </ul>
+                            </div>
+                            <div class="insurance-section">
+                                <strong>🛡️ Crop Insurance:</strong>
+                                <p>${crop.insurance}</p>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
-                <a href="#" data-route="crops" class="back-btn">← Back to Crop List</a>
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="btn-action primary" onclick="window.print()">
+                        <span>📄</span> Download Report
+                    </button>
+                    <a href="#" data-route="fertilizer" class="btn-action secondary">
+                        <span>🌿</span> Check Suitable Fertilizer
+                    </a>
+                    <a href="#" data-route="weather" class="btn-action secondary">
+                        <span>🌤️</span> Check Weather for This Crop
+                    </a>
+                </div>
+
+                <!-- Back Button -->
+                <a href="#" data-route="crops" class="back-btn-detail">
+                    ← Back to Crop List
+                </a>
             </div>
         `;
     }
