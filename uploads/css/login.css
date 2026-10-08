@@ -1,0 +1,227 @@
+body{
+
+height:100vh;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+background:
+linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),
+url("https://images.pexels.com/photos/5980/food-sunset-love-field.jpg?cs=srgb&dl=agriculture-field-grain-5980.jpg&fm=jpg");
+
+background-size:cover;
+background-position:center;
+
+}
+
+.auth-container{
+width:100%;
+max-width:400px;
+}
+
+.auth-box{
+background:white;
+padding:40px;
+border-radius:10px;
+box-shadow:0 10px 25px rgba(0,0,0,0.2);
+}
+
+.auth-language-control{
+display:flex;
+justify-content:flex-end;
+align-items:center;
+gap:8px;
+margin-bottom:14px;
+color:#4b5563;
+font-size:13px;
+font-weight:700;
+}
+
+.auth-language-control select{
+width:auto;
+min-width:105px;
+margin:0;
+padding:7px 32px 7px 10px;
+font-size:13px;
+}
+
+.auth-message{
+padding:11px 13px;
+margin-bottom:16px;
+border-radius:7px;
+font-size:14px;
+text-align:center;
+}
+
+.auth-message.error{
+background:#fee2e2;
+color:#991b1b;
+border:1px solid #fecaca;
+}
+
+.auth-message.success{
+background:#dcfce7;
+color:#166534;
+border:1px solid #bbf7d0;
+}
+
+.registration-note{
+margin:10px 0 14px;
+padding:10px;
+border-radius:6px;
+background:#f0fdf4;
+color:#166534;
+font-size:13px;
+line-height:1.45;
+}
+
+h2{
+text-align:center;
+margin-bottom:20px;
+}
+
+input{
+width:100%;
+padding:12px;
+margin:10px 0;
+border:1px solid #ccc;
+border-radius:6px;
+}
+
+.btn{
+width:100%;
+padding:12px;
+background:#2e7d32;
+color:white;
+border:none;
+border-radius:6px;
+cursor:pointer;
+font-size:16px;
+}
+
+.btn:hover{
+background:#1b5e20;
+}
+
+.tabs{
+display:flex;
+margin-bottom:20px;
+}
+
+.tabs button{
+flex:1;
+padding:10px;
+border:none;
+cursor:pointer;
+background:#eee;
+}
+
+.tabs .active{
+background:#2e7d32;
+color:white;
+}
+
+.switch{
+text-align:center;
+margin-top:10px;
+}
+
+.switch span{
+color:#2e7d32;
+cursor:pointer;
+font-weight:bold;
+}
+
+#registerForm{
+display:none;
+}
+select{
+
+width:100%;
+padding:12px;
+
+margin-top:10px;
+margin-bottom:15px;
+
+border:1px solid #ccc;
+border-radius:6px;
+
+font-size:14px;
+
+background:#fff;
+
+cursor:pointer;
+
+transition:0.3s;
+
+}
+
+/* hover effect */
+
+select:hover{
+
+border-color:#4CAF50;
+
+}
+
+/* focus effect */
+
+select:focus{
+
+outline:none;
+
+border-color:#4CAF50;
+
+box-shadow:0 0 5px rgba(76,175,80,0.5);
+
+}
+
+/* dropdown arrow style */
+
+select{
+
+appearance:none;
+-webkit-appearance:none;
+-moz-appearance:none;
+
+background-image:url("data:image/svg+xml;utf8,<svg fill='gray' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+
+background-repeat:no-repeat;
+background-position:right 10px center;
+
+background-size:18px;
+
+padding-right:35px;
+
+}
+.hero{
+    height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    background: linear-gradient(180deg, white, transparent 100%);
+}
+
+.hero-content{
+    max-width: 800px;
+}
+
+.hero h1{
+    font-size: 4rem;
+    font-weight: 900;
+    margin-bottom: 20px;
+}
+
+.hero h1 span{
+    color:#000000;
+    border-bottom:4px solid #4caf50;
+}
+
+.hero p{
+    font-size: 1.2rem;
+    color:#000000;
+    line-height:1.7;
+}

@@ -3,74 +3,109 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login - AGRIHELPER</title>
-<link rel="stylesheet" href="auth.css">
-<script src="https://unpkg.com/lucide@latest"></script>
+<title>AgriHelper Auth</title>
+<link rel="stylesheet" href="{{ url_for('uploaded_css', filename='login.css') }}">
 </head>
 
 <body>
-<form action="login.php" method="POST">
-  <input type="email" name="email" required>
-  <input type="password" name="password" required>
-  <button type="submit">Login</button>
-</form>
-<a href="index.html" class="floating-back">
-    <i data-lucide="arrow-left"></i>
-</a>
-
-<nav class="navbar">
-    <a href="index.html" class="logo">
-        <i data-lucide="leaf"></i> AGRIHELPER
-    </a>
-</nav>
 
 <div class="auth-container">
-    <div class="auth-card">
-        <h2>Sign In</h2>
 
-        <form id="loginForm">
-            <input type="email" id="email" placeholder="Email Address" required>
-            <input type="password" id="password" placeholder="Password" required>
-            <button type="submit">Login</button>
-        </form>
+<div class="auth-box">
 
-        <div class="auth-links">
-            <a href="forgot.html">Forgot Password?</a>
-            <p>Don't have an account? <a href="register.html">Sign Up</a></p>
-        </div>
-    </div>
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+    {% for category, message in messages %}
+        <div class="auth-message {{ category }}" role="alert">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+{% endwith %}
+
+<div class="tabs">
+<button id="loginTab" class="active" data-i18n="auth.login">Login</button>
+<button id="registerTab" data-i18n="auth.register">Register</button>
 </div>
 
+<!-- LOGIN -->
+
+<form id="loginForm" action="{{ url_for('login') }}" method="POST">
+
+<input type="hidden" name="language" value="en" data-language-input>
+
+<h2 data-i18n="auth.welcome">Welcome Back</h2>
+
+<input type="email" name="email" placeholder="Email Address" data-i18n-placeholder="auth.email" required>
+
+<input type="password" name="password" placeholder="Password" data-i18n-placeholder="auth.password" required>
+
+<select name="role" required>
+<option value="" selected disabled data-i18n="auth.role">Select your role</option>
+<option value="user" data-i18n="auth.user">User</option>
+<option value="admin" data-i18n="auth.admin">Admin</option>
+</select>
+
+<button type="submit" class="btn" data-i18n="auth.login">Login</button>
+
+<p class="switch"><span data-i18n="auth.noAccount">Don't have an account?</span> <span id="goRegister" data-i18n="auth.register">Register</span></p>
+
+</form>
+
+<!-- REGISTER -->
+
+<form id="registerForm" action="{{ url_for('register') }}" method="POST">
+
+<h2 data-i18n="auth.create">Create Account</h2>
+
+<input type="text" name="name" placeholder="Full Name" data-i18n-placeholder="auth.name" required>
+
+<input type="email" name="email" placeholder="Email Address" data-i18n-placeholder="auth.email" required>
+
+<input type="password" name="password" placeholder="Password" data-i18n-placeholder="auth.password" required>
+
+<label class="registration-language-label" for="registrationLanguage" data-i18n="auth.preferredLanguage">Preferred language</label>
+<select id="registrationLanguage" name="language" data-language-selector required>
+<option value="en">English</option>
+<option value="hi">हिन्दी</option>
+<option value="mr">मराठी</option>
+</select>
+
+<p class="registration-note" data-i18n="auth.note">New accounts are registered as Users. Admin access is granted only by the project owner.</p>
+
+<button type="submit" class="btn" data-i18n="auth.register">Register</button>
+
+<p class="switch"><span data-i18n="auth.hasAccount">Already have an account?</span> <span id="goLogin" data-i18n="auth.login">Login</span></p>
+
+</form>
+
+</div>
+
+</div>
+
+<script src="{{ url_for('javascript_asset', filename='i18n.js') }}"></script>
 <script>
-lucide.createIcons();
+const loginTab = document.getElementById('loginTab');
+const registerTab = document.getElementById('registerTab');
+const loginForm = document.getElementById('loginForm');
+const registerForm = document.getElementById('registerForm');
 
-document.getElementById("loginForm").addEventListener("submit", function(e) {
-    e.preventDefault();
-
-    let email = document.getElementById("email").value;
-    let password = document.getElementById("password").value;
-
-    if(email !== "" && password !== "") {
-        // Save user name (temporary example name from email)
-        let username = email.split("@")[0];
-
-        localStorage.setItem("isLoggedIn", "true");
-        localStorage.setItem("username", username);
-
-        // Show success message
-        alert("Login successful! Welcome, " + username);
-        
-        window.location.replace("index.html");
-    } else {
-        alert("Please enter email and password");
-    }
-});
-
-// Check if already logged in
-const isLoggedIn = localStorage.getItem("isLoggedIn");
-if (isLoggedIn === "true") {
-    window.location.replace("index.html");
+function showLogin() {
+    loginForm.style.display = 'block';
+    registerForm.style.display = 'none';
+    loginTab.classList.add('active');
+    registerTab.classList.remove('active');
 }
+
+function showRegister() {
+    loginForm.style.display = 'none';
+    registerForm.style.display = 'block';
+    registerTab.classList.add('active');
+    loginTab.classList.remove('active');
+}
+
+loginTab.addEventListener('click', showLogin);
+registerTab.addEventListener('click', showRegister);
+document.getElementById('goRegister').addEventListener('click', showRegister);
+document.getElementById('goLogin').addEventListener('click', showLogin);
 </script>
 
 </body>

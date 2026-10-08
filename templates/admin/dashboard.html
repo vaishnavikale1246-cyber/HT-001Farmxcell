@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AgriHelper administration dashboard">
+    <title>Admin Dashboard - AgriHelper</title>
+    <link rel="stylesheet" href="{{ url_for('uploaded_css', filename='admin.css') }}">
+</head>
+<body>
+    <aside class="sidebar">
+        <a class="sidebar-brand" href="{{ url_for('dashboard') }}">
+            <span class="brand-icon" aria-hidden="true">&#127807;</span>
+            <span>AgriHelper</span>
+        </a>
+
+        <nav class="sidebar-nav" aria-label="Admin navigation">
+            <a class="active" href="{{ url_for('dashboard') }}">
+                <span aria-hidden="true">&#9638;</span> Dashboard
+            </a>
+            <a href="#analytics">
+                <span aria-hidden="true">&#128200;</span> Farmer Analytics
+            </a>
+            <a href="{{ url_for('manage_crops') }}">
+                <span aria-hidden="true">&#127806;</span> Manage Crops
+            </a>
+            <a href="{{ url_for('manage_fertilizer') }}">
+                <span aria-hidden="true">&#129514;</span> Manage Fertilizers
+            </a>
+            <a href="{{ url_for('manage_loans') }}">
+                <span aria-hidden="true">&#8377;</span> Manage Loans
+            </a>
+            <a href="{{ url_for('manage_translations') }}">
+                <span aria-hidden="true">&#127760;</span> Translations
+            </a>
+        </nav>
+
+        <a class="sidebar-logout" href="{{ url_for('logout') }}">
+            <span aria-hidden="true">&#8592;</span> Logout
+        </a>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">Administration</p>
+                <h1>Admin Dashboard</h1>
+                <p class="page-subtitle">Manage AgriHelper agricultural information from one place.</p>
+            </div>
+            <div class="admin-badge">
+                <span class="admin-avatar" aria-hidden="true">A</span>
+                <div>
+                    <strong>Administrator</strong>
+                    <span>Full access</span>
+                </div>
+            </div>
+        </header>
+
+        <section id="analytics" class="analytics-section" aria-labelledby="analyticsTitle">
+            <div class="section-heading analytics-heading">
+                <div>
+                    <p class="eyebrow">Actual PostgreSQL activity</p>
+                    <h2 id="analyticsTitle">Farmer Analytics &amp; Insights</h2>
+                </div>
+                <p id="analyticsTrackingNotice">Loading analytics...</p>
+            </div>
+
+            <form id="analyticsFilters" class="analytics-filters">
+                <label>
+                    Date range
+                    <select id="analyticsPeriod" name="period">
+                        <option value="all">All tracked activity</option>
+                        <option value="7d">Last 7 days</option>
+                        <option value="30d">Last 30 days</option>
+                        <option value="year">This year</option>
+                    </select>
+                </label>
+                <label>
+                    Crop
+                    <select id="analyticsCrop" name="crop_id"><option value="">All crops</option></select>
+                </label>
+                <label>
+                    Disease
+                    <select id="analyticsDisease" name="disease"><option value="">All predictions</option></select>
+                </label>
+                <label>
+                    Fertilizer
+                    <select id="analyticsFertilizer" name="fertilizer_id"><option value="">All fertilizers</option></select>
+                </label>
+                <label>
+                    Activity
+                    <select id="analyticsActivity" name="activity_type"><option value="">All activities</option></select>
+                </label>
+                <button type="button" id="resetAnalyticsFilters">Reset filters</button>
+            </form>
+
+            <div id="analyticsStatus" class="analytics-status" role="status">Loading farmer activity...</div>
+
+            <div id="analyticsContent" hidden>
+                <div class="analytics-overview" aria-label="Farmer analytics overview">
+                    <article><span>Total Farmers</span><strong id="metricFarmers">0</strong><small>Registered user accounts</small></article>
+                    <article><span>Total Crops</span><strong id="metricCrops">0</strong><small>PostgreSQL crop records</small></article>
+                    <article><span>Total Fertilizers</span><strong id="metricTotalFertilizers">0</strong><small>PostgreSQL fertilizer records</small></article>
+                    <article><span>Total Loans</span><strong id="metricLoans">0</strong><small>PostgreSQL loan records</small></article>
+                    <article><span>Crop Interests</span><strong id="metricCropInterest">0</strong><small>Distinct farmer-crop interactions</small></article>
+                    <article><span>Disease Uploads</span><strong id="metricDiseaseUploads">0</strong><small>Successful AI analyses</small></article>
+                    <article><span>Fertilizer Interactions</span><strong id="metricFertilizers">0</strong><small>Information views</small></article>
+                    <article><span>Total Activities</span><strong id="metricActivities">0</strong><small>Tracked farmer actions</small></article>
+                </div>
+
+                <div class="analytics-chart-grid">
+                    <article class="analytics-panel">
+                        <header><div><p class="eyebrow">Information interest</p><h3>Crop-wise Farmer Interest</h3></div></header>
+                        <div id="cropInterestChart" class="analytics-chart"></div>
+                    </article>
+
+                    <article class="analytics-panel">
+                        <header><div><p class="eyebrow">AI usage, not prevalence</p><h3>Disease Detection Activity by Crop</h3></div></header>
+                        <div id="diseaseCropChart" class="analytics-chart"></div>
+                    </article>
+
+                    <article class="analytics-panel">
+                        <header>
+                            <div><p class="eyebrow">AI prediction count</p><h3>Most Frequently Detected Diseases</h3></div>
+                            <div class="analytics-mini-insight">
+                                <span>Highest / lowest</span>
+                                <strong><span id="highestDisease">No data</span> / <span id="lowestDisease">No data</span></strong>
+                            </div>
+                        </header>
+                        <div id="diseaseChart" class="analytics-chart"></div>
+                        <p class="analytics-interpretation">Counts represent AgriHelper AI detection activity, not real-world disease prevalence.</p>
+                    </article>
+
+                    <article class="analytics-panel">
+                        <header>
+                            <div><p class="eyebrow">Information views</p><h3>Fertilizer Interest</h3></div>
+                            <div class="analytics-mini-insight">
+                                <span>Top fertilizer / type</span>
+                                <strong><span id="topFertilizer">No data</span> / <span id="topFertilizerType">No data</span></strong>
+                            </div>
+                        </header>
+                        <div id="fertilizerChart" class="analytics-chart"></div>
+                    </article>
+
+                    <article class="analytics-panel analytics-wide-panel">
+                        <header><div><p class="eyebrow">Recorded usage over time</p><h3>Monthly Farmer Activity</h3></div></header>
+                        <div id="monthlyActivityChart" class="analytics-chart line-chart"></div>
+                    </article>
+                </div>
+
+                <div class="analytics-table-grid">
+                    <section class="analytics-panel analytics-table-panel">
+                        <header><div><p class="eyebrow">Top five</p><h3>Top Crops</h3></div></header>
+                        <div class="analytics-table-scroll">
+                            <table>
+                                <thead><tr><th>Crop</th><th>Views</th><th>Disease uploads</th><th>Interested farmers</th></tr></thead>
+                                <tbody id="topCropsBody"></tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <section class="analytics-panel analytics-table-panel">
+                        <header><div><p class="eyebrow">Latest events</p><h3>Recent Farmer Activity</h3></div></header>
+                        <div class="analytics-table-scroll">
+                            <table>
+                                <thead><tr><th>Farmer</th><th>Activity</th><th>Resource</th><th>Date</th></tr></thead>
+                                <tbody id="recentActivityBody"></tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </section>
+
+        <section class="dashboard-summary" aria-label="Dashboard summary">
+            <div class="summary-item">
+                <span>Management modules</span>
+                <strong>3</strong>
+            </div>
+            <div class="summary-item">
+                <span>System status</span>
+                <strong class="online-status"><i></i> Online</strong>
+            </div>
+            <div class="summary-item">
+                <span>Access level</span>
+                <strong>Admin</strong>
+            </div>
+        </section>
+
+        <section class="admin-section">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">Quick actions</p>
+                    <h2>Manage platform content</h2>
+                </div>
+                <p>Select a module to add, view, or remove information.</p>
+            </div>
+
+            <div class="dashboard-cards">
+                <article class="card admin-card crop-card-admin">
+                    <div class="card-icon" aria-hidden="true">&#127806;</div>
+                    <div class="card-body">
+                        <span class="card-label">Crop database</span>
+                        <h3>Manage Crops</h3>
+                        <p>Add growing requirements, seasonal information, yield, and market details.</p>
+                    </div>
+                    <a href="{{ url_for('manage_crops') }}" class="action-btn">
+                        Open crops <span aria-hidden="true">&#8594;</span>
+                    </a>
+                </article>
+
+                <article class="card admin-card fertilizer-card-admin">
+                    <div class="card-icon" aria-hidden="true">&#129514;</div>
+                    <div class="card-body">
+                        <span class="card-label">Nutrient guidance</span>
+                        <h3>Manage Fertilizers</h3>
+                        <p>Maintain fertilizer types, nutrients, recommended dosage, and descriptions.</p>
+                    </div>
+                    <a href="{{ url_for('manage_fertilizer') }}" class="action-btn">
+                        Open fertilizers <span aria-hidden="true">&#8594;</span>
+                    </a>
+                </article>
+
+                <article class="card admin-card loan-card-admin">
+                    <div class="card-icon rupee-icon" aria-hidden="true">&#8377;</div>
+                    <div class="card-body">
+                        <span class="card-label">Financial support</span>
+                        <h3>Manage Loans</h3>
+                        <p>Update government schemes, interest rates, regions, limits, and benefits.</p>
+                    </div>
+                    <a href="{{ url_for('manage_loans') }}" class="action-btn">
+                        Open loans <span aria-hidden="true">&#8594;</span>
+                    </a>
+                </article>
+            </div>
+        </section>
+
+        <section class="admin-section system-panel">
+            <div class="section-heading compact-heading">
+                <div>
+                    <p class="eyebrow">Overview</p>
+                    <h2>System information</h2>
+                </div>
+            </div>
+
+            <div class="system-grid">
+                <div><span>Project</span><strong>AgriHelper</strong></div>
+                <div><span>Technology</span><strong>Flask + PostgreSQL</strong></div>
+                <div><span>Panel</span><strong>Administrator</strong></div>
+                <div><span>AI module</span><strong>Disease Detection</strong></div>
+            </div>
+        </section>
+    </main>
+    <script src="{{ url_for('javascript_asset', filename='admin-analytics.js') }}"></script>
+</body>
+</html>

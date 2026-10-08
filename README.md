@@ -2,7 +2,7 @@
 
 A comprehensive digital platform designed to empower farmers with data-driven agricultural decision-making tools.
 
-## Problem Statement
+## 🌟 Problem Statement
 
 Farmers face multiple challenges in making informed agricultural decisions:
 
@@ -107,6 +107,39 @@ AgriHelper is built as a modern Single Page Application with:
 - **Page Templates** - Modular page components
 
 ## Getting Started
+
+### PostgreSQL database connection
+
+AgriHelper uses PostgreSQL through `psycopg2`. The default local connection is:
+
+- Host: `localhost`
+- Port: `5432`
+- Database: `AgriHelper`
+- User: `postgres`
+
+You can override the connection without editing `app.py` by setting environment
+variables before starting Flask:
+
+```powershell
+$env:DB_HOST = "localhost"
+$env:DB_PORT = "5432"
+$env:DB_NAME = "AgriHelper"
+$env:DB_USER = "postgres"
+$env:DB_PASSWORD = "your-postgresql-password"
+.\.venv\Scripts\python.exe -m flask --app app run --debug
+```
+
+For a hosted PostgreSQL database, set its complete connection string instead:
+
+```powershell
+$env:DATABASE_URL = "postgresql://user:password@host:5432/database"
+```
+
+Verify the connection and available tables with:
+
+```powershell
+.\.venv\Scripts\python.exe -m flask --app app check-db
+```
 
 ### Quick Start
 1. Clone the repository:

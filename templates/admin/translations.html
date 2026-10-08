@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Translations - AgriHelper</title>
+    <link rel="stylesheet" href="{{ url_for('uploaded_css', filename='admin.css') }}">
+</head>
+<body>
+<div class="sidebar">
+    <h2>🌱 AgriHelper</h2>
+    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('manage_crops') }}">🌾 Manage Crops</a>
+    <a href="{{ url_for('manage_fertilizer') }}">🧪 Manage Fertilizers</a>
+    <a href="{{ url_for('manage_loans') }}">💰 Manage Loans</a>
+    <a class="active" href="{{ url_for('manage_translations') }}">🌐 Translations</a>
+    <a class="sidebar-logout" href="{{ url_for('logout') }}">← Logout</a>
+</div>
+
+<div class="main-content">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+        <div class="admin-message {{ category }}" role="alert">{{ message }}</div>
+    {% endfor %}
+    {% endwith %}
+
+    <h1>🌐 Manage Content Translations</h1>
+    <p class="page-subtitle">
+        Add reviewed Hindi and Marathi text for database content. Missing translations safely fall back to English.
+    </p>
+
+    <div class="form-box translation-form-box">
+        <h2>Add or update translation</h2>
+        <form action="{{ url_for('save_translation') }}" method="POST" id="translationForm">
+            <label>
+                Content type
+                <select name="entity_type" id="translationEntityType" required>
+                    <option value="crop">Crop</option>
+                    <option value="fertilizer">Fertilizer</option>
+                    <option value="loan">Loan / Scheme</option>
+                    <option value="calendar_profile">Calendar Profile</option>
+                    <option value="calendar_activity">Calendar Activity</option>
+                    <option value="calendar_risk">Calendar Disease Risk</option>
+                </select>
+            </label>
+            <label>
+                Database record
+                <select name="entity_id" id="translationEntityId" required></select>
+            </label>
+            <label>
+                Field
+                <select name="field_name" id="translationField" required></select>
+            </label>
+            <label>
+                Language
+                <select name="language_code" required>
+                    <option value="hi">हिन्दी</option>
+                    <option value="mr">मराठी</option>
+                </select>
+            </label>
+            <label class="translation-text-label">
+                Reviewed translation
+                <textarea name="translated_text" placeholder="Enter the accurate translated text" required></textarea>
+            </label>
+            <button type="submit">Save and publish translation</button>
+        </form>
+    </div>
+
+    <div class="table-box">
+        <h2>Published translations</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Content</th><th>Record</th><th>Field</th><th>Language</th>
+                    <th>Translation</th><th>Updated</th><th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for item in translations %}
+                <tr>
+                    <td>{{ item[1] | title }}</td>
+                    <td>{{ resource_names.get((item[1], item[2]), 'Deleted record') }}</td>
+                    <td>{{ item[3].replace('_', ' ') | title }}</td>
+                    <td>{{ 'Hindi' if item[4] == 'hi' else 'Marathi' }}</td>
+                    <td>{{ item[5] }}</td>
+                    <td>{{ item[6].strftime('%d %b %Y %H:%M') }}</td>
+                    <td>
+                        <form class="delete-form" action="{{ url_for('delete_translation', translation_id=item[0]) }}" method="POST"
+                              onsubmit="return confirm('Delete this translation?');">
+                            <button type="submit" class="delete-btn">🗑 Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr><td colspan="7" class="empty-table">No translated database fields have been published yet.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+const translationResources = {{ resources | tojson }};
+const translationFields = {{ fields | tojson }};
+const entityType = document.getElementById('translationEntityType');
+const entityId = document.getElementById('translationEntityId');
+const fieldName = document.getElementById('translationField');
+
+function fillSelect(select, values, valueKey, labelKey) {
+    select.replaceChildren();
+    values.forEach(item => {
+        const option = document.createElement('option');
+        option.value = valueKey ? item[valueKey] : item;
+        option.textContent = labelKey ? item[labelKey] : item.replaceAll('_', ' ');
+        select.appendChild(option);
+    });
+}
+
+function updateTranslationOptions() {
+    const type = entityType.value;
+    fillSelect(entityId, translationResources[type] || [], 'id', 'name');
+    fillSelect(fieldName, translationFields[type] || []);
+}
+
+entityType.addEventListener('change', updateTranslationOptions);
+updateTranslationOptions();
+</script>
+</body>
+</html>

@@ -1,6 +1,8 @@
 // Weather API Integration
 // Using Open-Meteo API (free, no API key required)
 
+const weatherText = (key) => window.AgriI18n?.t(key) || key;
+
 const WeatherAPI = {
     baseUrl: 'https://api.open-meteo.com/v1',
     geocodingUrl: 'https://geocoding-api.open-meteo.com/v1',
@@ -8,8 +10,9 @@ const WeatherAPI = {
     // Get coordinates for a city
     async getCoordinates(city) {
         try {
+            const language = window.AgriI18n?.current || 'en';
             const response = await fetch(
-                `${this.geocodingUrl}/search?name=${encodeURIComponent(city)}&count=1&language=en&format=json`
+                `${this.geocodingUrl}/search?name=${encodeURIComponent(city)}&count=1&language=${encodeURIComponent(language)}&format=json`
             );
             
             if (!response.ok) {
@@ -71,6 +74,7 @@ const WeatherAPI = {
                     speed: data.current.wind_speed_10m / 3.6 // Convert km/h to m/s
                 },
                 weather: [{
+                    code: data.current.weather_code,
                     main: this.getWeatherDescription(data.current.weather_code),
                     description: this.getWeatherDescription(data.current.weather_code)
                 }],
@@ -100,6 +104,7 @@ const WeatherAPI = {
                         temp_max: weather.daily.temperature_2m_max[i]
                     },
                     weather: [{
+                        code: weather.daily.weather_code[i],
                         main: this.getWeatherDescription(weather.daily.weather_code[i])
                     }]
                 });
@@ -128,6 +133,7 @@ const WeatherAPI = {
                         temp_max: weather.daily.temperature_2m_max[i]
                     },
                     weather: [{
+                        code: weather.daily.weather_code[i],
                         main: this.getWeatherDescription(weather.daily.weather_code[i])
                     }]
                 });
@@ -143,33 +149,16 @@ const WeatherAPI = {
     // Convert WMO weather codes to descriptions
     getWeatherDescription(code) {
         const weatherCodes = {
-            0: 'Clear sky',
-            1: 'Mainly clear',
-            2: 'Partly cloudy',
-            3: 'Overcast',
-            45: 'Foggy',
-            48: 'Foggy',
-            51: 'Light drizzle',
-            53: 'Moderate drizzle',
-            55: 'Dense drizzle',
-            61: 'Slight rain',
-            63: 'Moderate rain',
-            65: 'Heavy rain',
-            71: 'Slight snow',
-            73: 'Moderate snow',
-            75: 'Heavy snow',
-            77: 'Snow grains',
-            80: 'Slight rain showers',
-            81: 'Moderate rain showers',
-            82: 'Violent rain showers',
-            85: 'Slight snow showers',
-            86: 'Heavy snow showers',
-            95: 'Thunderstorm',
-            96: 'Thunderstorm with hail',
-            99: 'Thunderstorm with hail'
+            0: 'clear', 1: 'mainlyClear', 2: 'partlyCloudy', 3: 'overcast',
+            45: 'foggy', 48: 'foggy', 51: 'lightDrizzle', 53: 'moderateDrizzle',
+            55: 'denseDrizzle', 61: 'slightRain', 63: 'moderateRain', 65: 'heavyRain',
+            71: 'slightSnow', 73: 'moderateSnow', 75: 'heavySnow', 77: 'snowGrains',
+            80: 'slightRainShowers', 81: 'moderateRainShowers', 82: 'violentRainShowers',
+            85: 'slightSnowShowers', 86: 'heavySnowShowers', 95: 'thunderstorm',
+            96: 'thunderstormHail', 99: 'thunderstormHail'
         };
-        
-        return weatherCodes[code] || 'Unknown';
+
+        return weatherText(`weather.code.${weatherCodes[code] || 'unknown'}`);
     }
 };
 
@@ -197,7 +186,11 @@ const WeatherUI = {
 
         const forecastHTML = dailyForecasts.map(day => {
             const date = new Date(day.dt * 1000);
-            const dayName = date.toLocaleDateString('en-US', { weekday: 'short' });
+            const locales = { en: 'en-IN', hi: 'hi-IN', mr: 'mr-IN' };
+            const dayName = date.toLocaleDateString(
+                locales[window.AgriI18n?.current] || 'en-IN',
+                { weekday: 'short' }
+            );
             const temp = Math.round(day.main.temp);
             const tempMin = Math.round(day.main.temp_min);
             const tempMax = Math.round(day.main.temp_max);
@@ -222,15 +215,16 @@ const WeatherUI = {
         const windSpeed = currentWeather.wind.speed * 3.6; // Convert to km/h
 
         // Check for rain in forecast
-        const rainForecast = forecast.list.slice(0, 8).some(item => 
-            item.weather[0].main.toLowerCase().includes('rain')
+        const rainCodes = new Set([51, 53, 55, 61, 63, 65, 80, 81, 82, 95, 96, 99]);
+        const rainForecast = forecast.list.slice(0, 8).some(item =>
+            rainCodes.has(item.weather[0].code)
         );
 
         if (rainForecast) {
             alerts.push({
                 level: 'medium',
-                title: 'Rainfall Expected',
-                message: 'Rain forecasted in the next 24 hours. Plan irrigation accordingly.'
+                title: weatherText('weather.alert.rainTitle'),
+                message: weatherText('weather.alert.rainMessage')
             });
         }
 
@@ -238,14 +232,14 @@ const WeatherUI = {
         if (temp > 35) {
             alerts.push({
                 level: 'high',
-                title: 'High Temperature Alert',
-                message: 'Extreme heat detected. Ensure adequate irrigation and crop protection.'
+                title: weatherText('weather.alert.heatTitle'),
+                message: weatherText('weather.alert.heatMessage')
             });
         } else if (temp < 10) {
             alerts.push({
                 level: 'high',
-                title: 'Frost Warning',
-                message: 'Low temperatures may cause frost. Protect sensitive crops.'
+                title: weatherText('weather.alert.frostTitle'),
+                message: weatherText('weather.alert.frostMessage')
             });
         }
 
@@ -253,14 +247,14 @@ const WeatherUI = {
         if (humidity > 80) {
             alerts.push({
                 level: 'medium',
-                title: 'High Humidity',
-                message: 'High humidity may increase disease risk. Monitor crops closely.'
+                title: weatherText('weather.alert.highHumidityTitle'),
+                message: weatherText('weather.alert.highHumidityMessage')
             });
         } else if (humidity < 30) {
             alerts.push({
                 level: 'medium',
-                title: 'Low Humidity',
-                message: 'Dry conditions detected. Consider increasing irrigation frequency.'
+                title: weatherText('weather.alert.lowHumidityTitle'),
+                message: weatherText('weather.alert.lowHumidityMessage')
             });
         }
 
@@ -268,8 +262,8 @@ const WeatherUI = {
         if (windSpeed > 40) {
             alerts.push({
                 level: 'high',
-                title: 'Strong Winds',
-                message: 'High wind speeds. Avoid spraying pesticides and secure crops.'
+                title: weatherText('weather.alert.windTitle'),
+                message: weatherText('weather.alert.windMessage')
             });
         }
 
@@ -277,8 +271,8 @@ const WeatherUI = {
         if (temp > 20 && temp < 30 && humidity > 60) {
             alerts.push({
                 level: 'medium',
-                title: 'Pest Activity Risk',
-                message: 'Favorable conditions for pest activity. Monitor crops regularly.'
+                title: weatherText('weather.alert.pestTitle'),
+                message: weatherText('weather.alert.pestMessage')
             });
         }
 
@@ -286,8 +280,8 @@ const WeatherUI = {
         if (alerts.length === 0) {
             alerts.push({
                 level: 'low',
-                title: 'Favorable Conditions',
-                message: 'Weather conditions are favorable for farming activities.'
+                title: weatherText('weather.alert.goodTitle'),
+                message: weatherText('weather.alert.goodMessage')
             });
         }
 
@@ -401,12 +395,12 @@ const WeatherController = {
                 },
                 (error) => {
                     console.error('Geolocation error:', error);
-                    alert('Unable to get your location. Please enter a city name.');
+                    alert(weatherText('weather.locationFailed'));
                     WeatherUI.showContent();
                 }
             );
         } else {
-            alert('Geolocation is not supported by your browser.');
+            alert(weatherText('weather.locationUnsupported'));
         }
     },
 
